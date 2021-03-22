@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'package:node_interop/node.dart';
 import 'package:node_interop/os.dart';
 import 'package:node_interop/path.dart';
@@ -68,8 +70,7 @@ abstract class Platform {
   static String get pathSeparator => path.sep;
 
   /// Get the name of the current locale.
-  static String get localeName =>
-      throw UnsupportedError('Not supported in Node.');
+  static String get localeName => throw UnsupportedError('Not supported in Node.');
 
   /// A string representing the operating system or platform.
   static String get operatingSystem => os.platform();
@@ -98,18 +99,15 @@ abstract class Platform {
 
   /// Whether the operating system is a version of
   /// [Android](https://en.wikipedia.org/wiki/Android_%28operating_system%29).
-  static bool get isAndroid =>
-      throw UnsupportedError('Android is not supported by Node.js.');
+  static bool get isAndroid => throw UnsupportedError('Android is not supported by Node.js.');
 
   /// Whether the operating system is a version of
   /// [iOS](https://en.wikipedia.org/wiki/IOS).
-  static bool get isIOS =>
-      throw UnsupportedError('iOS is not supported by Node.js.');
+  static bool get isIOS => throw UnsupportedError('iOS is not supported by Node.js.');
 
   /// Whether the operating system is a version of
   /// [Fuchsia](https://en.wikipedia.org/wiki/Google_Fuchsia).
-  static bool get isFuchsia =>
-      throw UnsupportedError('Fuchsia is not supported by Node.js.');
+  static bool get isFuchsia => throw UnsupportedError('Fuchsia is not supported by Node.js.');
 
   /// The environment for this process as a map from string key to string value.
   ///
@@ -119,8 +117,7 @@ abstract class Platform {
   /// so on Windows the map is case-insensitive and will convert
   /// all keys to upper case.
   /// On other platforms, keys can be distinguished by case.
-  static Map<String, String> get environment =>
-      Map.unmodifiable(dartify(process.env));
+  static Map<String, String> get environment => Map.unmodifiable(dartify(process.env));
 
   /// The path of the executable used to run the script in this isolate.
   ///
@@ -151,8 +148,7 @@ abstract class Platform {
   ///
   /// If the executable environment does not support [script],
   /// the URI is empty.
-  static Uri get script =>
-      Uri.file(process.argv[1], windows: Platform.isWindows);
+  static Uri get script => Uri.file(process.argv[1], windows: Platform.isWindows);
 
   /// The flags passed to the executable used to run the script in this isolate.
   ///
@@ -166,16 +162,14 @@ abstract class Platform {
   ///
   /// If present, it specifies the directory where Dart packages are looked up.
   /// Is `null` if there is no `--package-root` flag.
-  static String get packageRoot =>
-      throw UnsupportedError('Not supported in Node.');
+  static String get packageRoot => throw UnsupportedError('Not supported in Node.');
 
   /// The `--packages` flag passed to the executable used to run the script
   /// in this isolate.
   ///
   /// If present, it specifies a file describing how Dart packages are looked up.
   /// Is `null` if there is no `--packages` flag.
-  static String get packageConfig =>
-      throw UnsupportedError('Not supported in Node.');
+  static String get packageConfig => throw UnsupportedError('Not supported in Node.');
 
   /// The version of the current Dart runtime.
   ///

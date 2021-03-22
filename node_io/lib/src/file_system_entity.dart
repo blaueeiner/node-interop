@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io' as io;
 import 'dart:js' as js;
@@ -15,8 +17,7 @@ import 'file_system.dart';
 import 'platform.dart';
 
 abstract class FileSystemEntity implements file.FileSystemEntity {
-  static final RegExp _absoluteWindowsPathPattern =
-      RegExp(r'^(\\\\|[a-zA-Z]:[/\\])');
+  static final RegExp _absoluteWindowsPathPattern = RegExp(r'^(\\\\|[a-zA-Z]:[/\\])');
 
   @override
   file.FileSystem get fileSystem => const NodeFileSystem();
@@ -33,9 +34,8 @@ abstract class FileSystemEntity implements file.FileSystemEntity {
   @override
   String toString() => "$runtimeType: '$path'";
 
-  static final RegExp _parentRegExp = Platform.isWindows
-      ? RegExp(r'[^/\\][/\\]+[^/\\]')
-      : RegExp(r'[^/]/+[^/]');
+  static final RegExp _parentRegExp =
+      Platform.isWindows ? RegExp(r'[^/\\][/\\]+[^/\\]') : RegExp(r'[^/]/+[^/]');
 
   static String parentOf(String path) {
     var rootEnd = -1;
@@ -95,8 +95,7 @@ abstract class FileSystemEntity implements file.FileSystemEntity {
   Uri get uri => Uri.file(path, windows: Platform.isWindows);
 
   @override
-  Stream<io.FileSystemEvent> watch(
-      {int events = io.FileSystemEvent.all, bool recursive = false}) {
+  Stream<io.FileSystemEvent> watch({int events = io.FileSystemEvent.all, bool recursive = false}) {
     // TODO: implement watch
     throw UnimplementedError();
   }
@@ -127,8 +126,7 @@ class FileStat implements io.FileStat {
   @override
   final int size;
 
-  FileStat._internal(this.changed, this.modified, this.accessed, this.type,
-      this.mode, this.size);
+  FileStat._internal(this.changed, this.modified, this.accessed, this.type, this.mode, this.size);
 
   const FileStat._internalNotFound()
       : changed = null,

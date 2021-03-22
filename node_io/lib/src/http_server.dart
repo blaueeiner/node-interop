@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io' as io;
 import 'dart:js';
@@ -111,8 +113,7 @@ abstract class HttpServer implements io.HttpServer {
   /// distributed over multiple isolates this way.
   static Future<io.HttpServer> bind(address, int port,
           {int backlog = 0, bool v6Only = false, bool shared = false}) =>
-      _HttpServer.bind(address, port,
-          backlog: backlog, v6Only: v6Only, shared: shared);
+      _HttpServer.bind(address, port, backlog: backlog, v6Only: v6Only, shared: shared);
 }
 
 class _HttpServer extends Stream<io.HttpRequest> implements HttpServer {
@@ -151,8 +152,7 @@ class _HttpServer extends Stream<io.HttpRequest> implements HttpServer {
     _controller.addError(error);
   }
 
-  void _jsRequestHandler(
-      _http.IncomingMessage request, _http.ServerResponse response) {
+  void _jsRequestHandler(_http.IncomingMessage request, _http.ServerResponse response) {
     if (_controller.isPaused) {
       // Reject any incoming request before listening started or subscription
       // is paused.
@@ -227,8 +227,8 @@ class _HttpServer extends Stream<io.HttpRequest> implements HttpServer {
     void Function() onDone,
     bool cancelOnError,
   }) {
-    return _controller.stream.listen(onData,
-        onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return _controller.stream
+        .listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
   }
 
   @override
@@ -244,8 +244,7 @@ class NodeHttpRequest implements io.HttpRequest, HasReadable {
   final _http.ServerResponse _nativeResponse;
 
   NodeHttpRequest(_http.IncomingMessage nativeRequest, this._nativeResponse)
-      : _delegate = ReadableStream(nativeRequest,
-            convert: (chunk) => Uint8List.fromList(chunk));
+      : _delegate = ReadableStream(nativeRequest, convert: (chunk) => Uint8List.fromList(chunk));
 
   @override
   _http.IncomingMessage get nativeInstance => _delegate.nativeInstance;
@@ -324,8 +323,7 @@ class NodeHttpRequest implements io.HttpRequest, HasReadable {
   Uri _requestedUri;
 
   @override
-  io.HttpResponse get response =>
-      _response ??= NodeHttpResponse(_nativeResponse);
+  io.HttpResponse get response => _response ??= NodeHttpResponse(_nativeResponse);
   io.HttpResponse _response; // ignore: close_sinks
 
   @override
@@ -384,8 +382,7 @@ class NodeHttpRequest implements io.HttpRequest, HasReadable {
   }
 
   @override
-  Stream<Uint8List> distinct(
-      [bool Function(Uint8List previous, Uint8List next) equals]) {
+  Stream<Uint8List> distinct([bool Function(Uint8List previous, Uint8List next) equals]) {
     return _delegate.distinct(equals);
   }
 
@@ -423,8 +420,7 @@ class NodeHttpRequest implements io.HttpRequest, HasReadable {
   }
 
   @override
-  Future<S> fold<S>(
-      S initialValue, S Function(S previous, Uint8List element) combine) {
+  Future<S> fold<S>(S initialValue, S Function(S previous, Uint8List element) combine) {
     return _delegate.fold<S>(initialValue, combine);
   }
 
@@ -479,8 +475,7 @@ class NodeHttpRequest implements io.HttpRequest, HasReadable {
   }
 
   @override
-  Future<Uint8List> reduce(
-      List<int> Function(Uint8List previous, Uint8List element) combine) {
+  Future<Uint8List> reduce(List<int> Function(Uint8List previous, Uint8List element) combine) {
     return _delegate.reduce((p, e) => Uint8List.fromList(combine(p, e)));
   }
 
@@ -641,8 +636,7 @@ class NodeHttpResponse extends NodeIOSink implements io.HttpResponse {
   }
 
   @override
-  io.HttpHeaders get headers =>
-      _headers ??= ResponseHttpHeaders(nativeInstance);
+  io.HttpHeaders get headers => _headers ??= ResponseHttpHeaders(nativeInstance);
   ResponseHttpHeaders _headers;
 
   @override

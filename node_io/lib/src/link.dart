@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io' as io;
 import 'dart:js' as js;
@@ -82,8 +84,7 @@ class Link extends FileSystemEntity implements file.Link {
   @override
   Future<Link> delete({bool recursive = false}) {
     if (recursive) {
-      return Future.error(
-          UnsupportedError('Recursive flag is not supported by Node.js'));
+      return Future.error(UnsupportedError('Recursive flag is not supported by Node.js'));
     }
     final completer = Completer<Link>();
     void callback(err) {

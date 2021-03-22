@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io' as io;
 import 'dart:js' as js;
@@ -117,18 +119,16 @@ class Directory extends FileSystemEntity implements file.Directory {
   file.Directory get absolute => Directory(node_path.path.resolve(path));
 
   @override
-  Future<bool> exists() => FileStat.stat(path)
-      .then((stat) => stat.type == io.FileSystemEntityType.directory);
+  Future<bool> exists() =>
+      FileStat.stat(path).then((stat) => stat.type == io.FileSystemEntityType.directory);
 
   @override
-  bool existsSync() =>
-      FileStat.statSync(path).type == io.FileSystemEntityType.directory;
+  bool existsSync() => FileStat.statSync(path).type == io.FileSystemEntityType.directory;
 
   @override
   Future<file.FileSystemEntity> delete({bool recursive = false}) {
     if (recursive) {
-      return Future.error(
-          UnsupportedError('Recursive delete is not supported by Node API'));
+      return Future.error(UnsupportedError('Recursive delete is not supported by Node API'));
     }
     final completer = Completer<Directory>();
 
@@ -154,8 +154,7 @@ class Directory extends FileSystemEntity implements file.Directory {
   }
 
   @override
-  Stream<FileSystemEntity> list(
-      {bool recursive = false, bool followLinks = true}) {
+  Stream<FileSystemEntity> list({bool recursive = false, bool followLinks = true}) {
     if (recursive) {
       throw UnsupportedError('Recursive list is not supported in Node.');
     }
@@ -285,8 +284,7 @@ class Directory extends FileSystemEntity implements file.Directory {
   }
 
   @override
-  List<file.FileSystemEntity> listSync(
-      {bool recursive = false, bool followLinks = true}) {
+  List<file.FileSystemEntity> listSync({bool recursive = false, bool followLinks = true}) {
     if (recursive) {
       throw UnsupportedError('Recursive list is not supported in Node.js.');
     }
@@ -307,8 +305,7 @@ class Directory extends FileSystemEntity implements file.Directory {
   }
 
   @override
-  file.Directory childDirectory(String basename) =>
-      Directory(join(path, basename));
+  file.Directory childDirectory(String basename) => Directory(join(path, basename));
 
   @override
   file.File childFile(String basename) => File(join(path, basename));

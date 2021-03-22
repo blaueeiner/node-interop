@@ -1,6 +1,8 @@
 // Copyright (c) 2020, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io' as io;
 
@@ -49,8 +51,7 @@ class NodeFileSystem extends f.FileSystem {
 
   @override
   Future<bool> identical(String path1, String path2) async {
-    var stats = await Future.wait(
-        [invokeAsync1(fs.lstat, path1), invokeAsync1(fs.lstat, path2)],
+    var stats = await Future.wait([invokeAsync1(fs.lstat, path1), invokeAsync1(fs.lstat, path2)],
         eagerError: true);
 
     return stats[0].ino == stats[1].ino && stats[0].dev == stats[1].dev;
@@ -67,8 +68,7 @@ class NodeFileSystem extends f.FileSystem {
   final isWatchSupported = false;
 
   @override
-  Future<io.FileSystemEntityType> type(String path,
-      {bool followLinks = true}) async {
+  Future<io.FileSystemEntityType> type(String path, {bool followLinks = true}) async {
     Stats stats;
     try {
       stats = await invokeAsync1(followLinks ? fs.stat : fs.lstat, path);

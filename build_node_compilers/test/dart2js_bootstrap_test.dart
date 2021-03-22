@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'package:build_modules/build_modules.dart';
 import 'package:build_node_compilers/build_node_compilers.dart';
 import 'package:build_test/build_test.dart';
@@ -41,7 +43,6 @@ void main() {
       'a|web/index.dart.js': decodedMatches(contains('world')),
       'a|web/index.dart.js.map': anything,
     };
-    await testBuilder(NodeEntrypointBuilder(WebCompiler.Dart2Js), assets,
-        outputs: expectedOutputs);
+    await testBuilder(NodeEntrypointBuilder(WebCompiler.Dart2Js), assets, outputs: expectedOutputs);
   });
 }

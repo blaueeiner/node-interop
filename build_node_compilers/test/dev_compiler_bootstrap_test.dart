@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'package:build/build.dart';
 import 'package:build_modules/build_modules.dart';
 import 'package:build_node_compilers/build_node_compilers.dart';
@@ -61,11 +63,8 @@ void main() {
 Future<void> runPrerequisites(Map<String, dynamic> assets) async {
   await testBuilderAndCollectAssets(const ModuleLibraryBuilder(), assets);
   await testBuilderAndCollectAssets(MetaModuleBuilder(ddcPlatform), assets);
-  await testBuilderAndCollectAssets(
-      MetaModuleCleanBuilder(ddcPlatform), assets);
+  await testBuilderAndCollectAssets(MetaModuleCleanBuilder(ddcPlatform), assets);
   await testBuilderAndCollectAssets(ModuleBuilder(ddcPlatform), assets);
-  await testBuilderAndCollectAssets(
-      ddcKernelBuilder(BuilderOptions({})), assets);
-  await testBuilderAndCollectAssets(
-      DevCompilerBuilder(platform: ddcPlatform), assets);
+  await testBuilderAndCollectAssets(ddcKernelBuilder(BuilderOptions({})), assets);
+  await testBuilderAndCollectAssets(DevCompilerBuilder(platform: ddcPlatform), assets);
 }

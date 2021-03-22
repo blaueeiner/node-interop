@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 @TestOn('node')
 library file_test;
 
@@ -30,10 +32,8 @@ void main() {
     });
 
     test('stat', () async {
-      expect(
-          (await file('__dummy__').stat()).type, FileSystemEntityType.notFound);
-      expect(
-          (await file('pubspec.yaml').stat()).type, FileSystemEntityType.file);
+      expect((await file('__dummy__').stat()).type, FileSystemEntityType.notFound);
+      expect((await file('pubspec.yaml').stat()).type, FileSystemEntityType.file);
     });
 
     test('statSync', () async {
@@ -42,8 +42,7 @@ void main() {
     });
 
     test('readAsBytes', () async {
-      var path =
-          createFile('readAsBytes.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
+      var path = createFile('readAsBytes.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
       var file = File(path);
       expect(file.existsSync(), isTrue);
       var data = await file.readAsBytes();
@@ -65,8 +64,7 @@ void main() {
     });
 
     test('readAsBytesSync', () async {
-      var path = createFile(
-          'readAsBytesSync.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
+      var path = createFile('readAsBytesSync.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
       var file = File(path);
       expect(file.existsSync(), isTrue);
       var data = file.readAsBytesSync();
@@ -85,8 +83,7 @@ void main() {
       var path = createFile('renameSync.txt', 'hello world');
       var file = File(path);
       expect(file.existsSync(), isTrue);
-      final renamedPath =
-          file.path.replaceFirst('renameSync.txt', 'renamedSync.txt');
+      final renamedPath = file.path.replaceFirst('renameSync.txt', 'renamedSync.txt');
       file.renameSync(renamedPath);
       final renamed = File(renamedPath);
       expect(file.existsSync(), isFalse);
@@ -104,8 +101,7 @@ void main() {
     });
 
     test('copySync', () async {
-      var path =
-          createFile('copy_sync.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
+      var path = createFile('copy_sync.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
       var file = File(path);
       final copyPath = path.replaceFirst('copy_sync.txt', 'copy_sync_copy.txt');
       final result = await file.copy(copyPath);
@@ -115,8 +111,7 @@ void main() {
     });
 
     test('delete', () async {
-      var path =
-          createFile('delete.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
+      var path = createFile('delete.txt', String.fromCharCodes([1, 2, 3, 4, 5]));
       var file = File(path);
       expect(await file.exists(), isTrue);
       await file.delete();

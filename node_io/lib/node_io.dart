@@ -6,6 +6,9 @@
 /// This library is designed so that you should be able to replace imports of
 /// `dart:io` with `package:node_io/node_io.dart` and get the same functionality
 /// working without any additional modifications.
+
+// @dart=2.9
+
 library node_io;
 
 import 'package:file/file.dart' as file;

@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'package:build/build.dart';
 import 'package:build_modules/build_modules.dart';
 import 'package:build_node_compilers/build_node_compilers.dart';
@@ -35,11 +37,9 @@ void main() {
       // Set up all the other required inputs for this test.
       await testBuilderAndCollectAssets(const ModuleLibraryBuilder(), assets);
       await testBuilderAndCollectAssets(MetaModuleBuilder(ddcPlatform), assets);
-      await testBuilderAndCollectAssets(
-          MetaModuleCleanBuilder(ddcPlatform), assets);
+      await testBuilderAndCollectAssets(MetaModuleCleanBuilder(ddcPlatform), assets);
       await testBuilderAndCollectAssets(ModuleBuilder(ddcPlatform), assets);
-      await testBuilderAndCollectAssets(
-          ddcKernelBuilder(BuilderOptions({})), assets);
+      await testBuilderAndCollectAssets(ddcKernelBuilder(BuilderOptions({})), assets);
     });
 
     test('can compile ddc modules under lib and web', () async {
@@ -49,8 +49,7 @@ void main() {
         'a|lib/a$jsModuleExtension': decodedMatches(contains('hello')),
         'a|lib/a$jsSourceMapExtension': decodedMatches(contains('a.dart')),
         'a|web/index$jsModuleExtension': decodedMatches(contains('main')),
-        'a|web/index$jsSourceMapExtension':
-            decodedMatches(contains('index.dart')),
+        'a|web/index$jsSourceMapExtension': decodedMatches(contains('index.dart')),
       };
       await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets,
           outputs: expectedOutputs);
@@ -67,19 +66,16 @@ void main() {
 
         // Set up all the other required inputs for this test.
         await testBuilderAndCollectAssets(const ModuleLibraryBuilder(), assets);
-        await testBuilderAndCollectAssets(
-            MetaModuleBuilder(ddcPlatform), assets);
-        await testBuilderAndCollectAssets(
-            MetaModuleCleanBuilder(ddcPlatform), assets);
+        await testBuilderAndCollectAssets(MetaModuleBuilder(ddcPlatform), assets);
+        await testBuilderAndCollectAssets(MetaModuleCleanBuilder(ddcPlatform), assets);
         await testBuilderAndCollectAssets(ModuleBuilder(ddcPlatform), assets);
-        await testBuilderAndCollectAssets(
-            ddcKernelBuilder(BuilderOptions({})), assets);
+        await testBuilderAndCollectAssets(ddcKernelBuilder(BuilderOptions({})), assets);
       });
 
       test('reports useful messages', () async {
         var expectedOutputs = {
-          'a|web/index$jsModuleErrorsExtension': decodedMatches(
-              allOf(contains('String'), contains('assigned'), contains('int'))),
+          'a|web/index$jsModuleErrorsExtension':
+              decodedMatches(allOf(contains('String'), contains('assigned'), contains('int'))),
         };
         var logs = <LogRecord>[];
         await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets,
@@ -103,17 +99,15 @@ void main() {
 
         // Set up all the other required inputs for this test.
         await testBuilderAndCollectAssets(const ModuleLibraryBuilder(), assets);
-        await testBuilderAndCollectAssets(
-            MetaModuleBuilder(ddcPlatform), assets);
-        await testBuilderAndCollectAssets(
-            MetaModuleCleanBuilder(ddcPlatform), assets);
+        await testBuilderAndCollectAssets(MetaModuleBuilder(ddcPlatform), assets);
+        await testBuilderAndCollectAssets(MetaModuleCleanBuilder(ddcPlatform), assets);
         await testBuilderAndCollectAssets(ModuleBuilder(ddcPlatform), assets);
       });
 
       test('reports useful messages', () async {
         var expectedOutputs = {
-          'a|web/index$jsModuleErrorsExtension': decodedMatches(
-              contains('Unable to find modules for some sources')),
+          'a|web/index$jsModuleErrorsExtension':
+              decodedMatches(contains('Unable to find modules for some sources')),
         };
         var logs = <LogRecord>[];
         await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets,
@@ -122,8 +116,7 @@ void main() {
             logs,
             contains(predicate<LogRecord>((record) =>
                 record.level == Level.SEVERE &&
-                record.message
-                    .contains('Unable to find modules for some sources'))));
+                record.message.contains('Unable to find modules for some sources'))));
       });
     });
   });

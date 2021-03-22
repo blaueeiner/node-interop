@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:js';
 
@@ -40,12 +42,10 @@ class NodeClient extends BaseClient {
     int keepAliveMsecs = 1000,
     HttpAgentOptions httpOptions,
     HttpsAgentOptions httpsOptions,
-  })  : _httpOptions = httpOptions ??
-            HttpAgentOptions(
-                keepAlive: keepAlive, keepAliveMsecs: keepAliveMsecs),
-        _httpsOptions = httpsOptions ??
-            HttpsAgentOptions(
-                keepAlive: keepAlive, keepAliveMsecs: keepAliveMsecs);
+  })  : _httpOptions =
+            httpOptions ?? HttpAgentOptions(keepAlive: keepAlive, keepAliveMsecs: keepAliveMsecs),
+        _httpsOptions =
+            httpsOptions ?? HttpsAgentOptions(keepAlive: keepAlive, keepAliveMsecs: keepAliveMsecs);
 
   final HttpAgentOptions _httpOptions;
   final HttpsAgentOptions _httpsOptions;
@@ -107,12 +107,10 @@ class _RequestHandler {
     url ??= request.url;
     method ??= request.method;
 
-    var usedAgent =
-        (url.scheme == 'http') ? client.httpAgent : client.httpsAgent;
+    var usedAgent = (url.scheme == 'http') ? client.httpAgent : client.httpsAgent;
     var sendRequest = (url.scheme == 'http') ? http.request : https.request;
 
-    var pathWithQuery =
-        url.hasQuery ? [url.path, '?', url.query].join() : url.path;
+    var pathWithQuery = url.hasQuery ? [url.path, '?', url.query].join() : url.path;
     var options = RequestOptions(
       protocol: '${url.scheme}:',
       hostname: url.host,
@@ -178,8 +176,7 @@ class _RequestHandler {
     return false;
   }
 
-  Future<StreamedResponse> redirect(StreamedResponse response,
-      [String method, bool followLoops]) {
+  Future<StreamedResponse> redirect(StreamedResponse response, [String method, bool followLoops]) {
     // Set method as defined by RFC 2616 section 10.3.4.
     if (response.statusCode == HttpStatus.seeOther && method == 'POST') {
       method = 'GET';
