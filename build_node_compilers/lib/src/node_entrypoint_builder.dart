@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:analyzer/dart/analysis/utilities.dart';
@@ -52,8 +54,7 @@ class NodeEntrypointBuilder implements Builder {
       {this.dart2JsArgs = const ['--no-sound-null-safety']});
 
   factory NodeEntrypointBuilder.fromOptions(BuilderOptions options) {
-    validateOptions(
-        options.config, _supportedOptions, 'build_node_compilers|entrypoint',
+    validateOptions(options.config, _supportedOptions, 'build_node_compilers|entrypoint',
         deprecatedOptions: _deprecatedOptions);
     var compilerOption = options.config[_compiler] as String ?? 'dartdevc';
     WebCompiler compiler;
@@ -65,18 +66,16 @@ class NodeEntrypointBuilder implements Builder {
         compiler = WebCompiler.Dart2Js;
         break;
       default:
-        throw ArgumentError.value(compilerOption, _compiler,
-            'Only `dartdevc` and `dart2js` are supported.');
+        throw ArgumentError.value(
+            compilerOption, _compiler, 'Only `dartdevc` and `dart2js` are supported.');
     }
 
     if (options.config[_dart2jsArgs] is! List) {
-      throw ArgumentError.value(options.config[_dart2jsArgs], _dart2jsArgs,
-          'Expected a list for $_dart2jsArgs.');
+      throw ArgumentError.value(
+          options.config[_dart2jsArgs], _dart2jsArgs, 'Expected a list for $_dart2jsArgs.');
     }
-    var dart2JsArgs = (options.config[_dart2jsArgs] as List)
-            ?.map((arg) => '$arg')
-            ?.toList() ??
-        const <String>[];
+    var dart2JsArgs =
+        (options.config[_dart2jsArgs] as List)?.map((arg) => '$arg')?.toList() ?? const <String>[];
 
     return NodeEntrypointBuilder(compiler, dart2JsArgs: dart2JsArgs);
   }
@@ -115,8 +114,7 @@ Future<bool> _isAppEntryPoint(AssetId dartId, AssetReader reader) async {
   // Skip reporting errors here, dartdevc will report them later with nicer
   // formatting.
   // ignore: deprecated_member_use
-  var parsed = parseString(
-      content: await reader.readAsString(dartId), throwIfDiagnostics: false);
+  var parsed = parseString(content: await reader.readAsString(dartId), throwIfDiagnostics: false);
 
   // Allow two or fewer arguments so that entrypoints intended for use with
   // [spawnUri] get counted.
