@@ -11,14 +11,23 @@ environment:
 dependencies:
   http: ^0.13.1
   node_interop:
-    path: ../node_interop
+    git:
+      url: https://github.com/blaueeiner/node-interop
+      path: ./node_interop/
+      ref: feature/update-dependencies
   node_io:
-    path: ../node_io
+    git:
+      url: https://github.com/blaueeiner/node-interop
+      path: ./node_io/
+      ref: feature/update-dependencies
 
 dev_dependencies:
   build_runner: ^1.12.2
   build_node_compilers:
-    path: ../build_node_compilers
+    git:
+      url: https://github.com/blaueeiner/node-interop
+      path: ./build_node_compilers/
+      ref: feature/update-dependencies
   build_test: ^2.0.0
   pedantic: ^1.11.0
   test: ^1.16.8

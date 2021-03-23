@@ -15,5 +15,8 @@ dev_dependencies:
   test: ^1.16.8
   build_runner: ^1.12.2
   build_node_compilers:
-    path: ../build_node_compilers
+    git:
+      url: https://github.com/blaueeiner/node-interop
+      path: ./build_node_compilers/
+      ref: feature/update-dependencies
   build_test: ^2.0.0
