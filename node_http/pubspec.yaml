@@ -9,7 +9,7 @@ environment:
   sdk: ">=2.0.0 <3.0.0"
 
 dependencies:
-  http: ^0.12.0
+  http: ^0.13.1
   node_interop:
     git:
       url: https://github.com/blaueeiner/node-interop.git
@@ -22,8 +22,12 @@ dependencies:
       ref: master
 
 dev_dependencies:
-  build_runner: ">=1.10.0 <1.10.2"
-  build_node_compilers: ^0.3.0
-  build_test: ^1.0.0
-  pedantic: ^1.0.0
-  test: ^1.0.0
+  build_runner: ^1.12.2
+  build_node_compilers:
+    git:
+      url: https://github.com/blaueeiner/node-interop.git
+      path: ./build_node_compilers/
+      ref: master
+  build_test: ^2.0.0
+  pedantic: ^1.11.0
+  test: ^1.16.8
