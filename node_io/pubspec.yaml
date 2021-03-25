@@ -3,13 +3,18 @@ description: Like dart:io but with Node.js.
 version: 1.2.0
 homepage: https://github.com/pulyaevskiy/node-interop
 author: Anatoly Pulyaevskiy <anatoly.pulyaevskiy@gmail.com>
+publish_to: none
 
 environment:
-  sdk: '>=2.2.0 <3.0.0'
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   file: ^5.0.0
-  node_interop: ^1.2.1
+  node_interop:
+    git:
+      url: https://github.com/blaueeiner/node-interop.git
+      path: ./node_interop/
+      ref: master
   path: ^1.6.2
 
 dev_dependencies:
