@@ -14,13 +14,17 @@ void main() {
   late Map<String, dynamic> assets;
 
   setUp(() async {
-    assets = {
-      'b|lib/b.dart': '''final world = 'world';''',
+    assets = <String, Object>{
+      'b|lib/b.dart': '''
+        // @dart=2.9
+        final world = 'world';''',
       'a|lib/a.dart': '''
+        // @dart=2.9
         import 'package:b/b.dart';
         final hello = world;
       ''',
       'a|web/index.dart': '''
+        // @dart=2.9
         import "package:a/a.dart";
         main() {
           print(hello);
@@ -61,11 +65,8 @@ void main() {
 Future<void> runPrerequisites(Map<String, dynamic> assets) async {
   await testBuilderAndCollectAssets(const ModuleLibraryBuilder(), assets);
   await testBuilderAndCollectAssets(MetaModuleBuilder(ddcPlatform), assets);
-  await testBuilderAndCollectAssets(
-      MetaModuleCleanBuilder(ddcPlatform), assets);
+  await testBuilderAndCollectAssets(MetaModuleCleanBuilder(ddcPlatform), assets);
   await testBuilderAndCollectAssets(ModuleBuilder(ddcPlatform), assets);
-  await testBuilderAndCollectAssets(
-      ddcKernelBuilder(BuilderOptions({})), assets);
-  await testBuilderAndCollectAssets(
-      DevCompilerBuilder(platform: ddcPlatform), assets);
+  await testBuilderAndCollectAssets(ddcKernelBuilder(BuilderOptions({})), assets);
+  await testBuilderAndCollectAssets(DevCompilerBuilder(platform: ddcPlatform), assets);
 }

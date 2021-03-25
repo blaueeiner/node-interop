@@ -13,13 +13,17 @@ void main() {
   final platform = dart2jsPlatform;
 
   setUp(() async {
-    assets = {
-      'b|lib/b.dart': '''final world = 'world';''',
+    assets = <String, Object>{
+      'b|lib/b.dart': '''
+        // @dart=2.9
+        final world = 'world';''',
       'a|lib/a.dart': '''
+        // @dart=2.9
         import 'package:b/b.dart';
         final hello = world;
       ''',
       'a|web/index.dart': '''
+        // @dart=2.9
         import "package:a/a.dart";
         main() {
           print(hello);

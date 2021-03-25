@@ -70,7 +70,7 @@ void main() {
     });
 
     test('make get request with library-level get method', () async {
-      var response = await http.get('http://127.0.0.1:8181/test');
+      var response = await http.get(Uri.parse('http://127.0.0.1:8181/test'));
       expect(response.statusCode, 200);
       expect(response.contentLength, greaterThan(0));
       expect(response.body, equals('ok'));
