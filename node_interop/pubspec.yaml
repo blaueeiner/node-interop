@@ -14,5 +14,9 @@ dev_dependencies:
   pedantic: ^1.11.0
   test: ^1.16.8
   build_runner: ^1.12.2
-  build_node_compilers: ^0.3.0
+  build_node_compilers:
+    git:
+      url: https://github.com/blaueeiner/node-interop.git
+      path: ./build_node_compilers/
+      ref: master
   build_test: ^2.0.0
