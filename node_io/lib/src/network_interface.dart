@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:io' as io;
 
 import 'package:node_interop/os.dart';
@@ -23,8 +25,7 @@ abstract class NetworkInterface implements io.NetworkInterface {
 
     var index = 0;
     final result = data.entries
-        .map((entry) => _NetworkInterface.fromJS(
-            entry.key, index++, List<Map>.from(entry.value)))
+        .map((entry) => _NetworkInterface.fromJS(entry.key, index++, List<Map>.from(entry.value)))
         .toList(growable: false);
 
     return Future.value(result);

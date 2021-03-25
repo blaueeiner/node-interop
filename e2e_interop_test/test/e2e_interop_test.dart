@@ -25,16 +25,14 @@ void main() {
     });
 
     test('compile', () {
-      final run = Process.runSync('node', ['build/node/hello_world.dart.js'],
-          runInShell: true);
+      final run = Process.runSync('node', ['build/node/hello_world.dart.js'], runInShell: true);
       expect(run.exitCode, 0);
       expect(run.stdout, 'Hello world\n');
       // 3.1514934010709914
     }, skip: 'dartdevc support is very fragile');
 
     test('exports', () {
-      final run =
-          Process.runSync('node', ['build/node/slow_pi.js'], runInShell: true);
+      final run = Process.runSync('node', ['build/node/slow_pi.js'], runInShell: true);
       expect(run.exitCode, 0);
       expect(run.stdout, contains('slowPi(100): 3.1514934010709914\n'));
       expect(run.stdout, contains('fastPi: 3.1514934010709914\n'));
@@ -64,15 +62,13 @@ void main() {
     });
 
     test('compile', () {
-      final run = Process.runSync('node', ['build/node/hello_world.dart.js'],
-          runInShell: true);
+      final run = Process.runSync('node', ['build/node/hello_world.dart.js'], runInShell: true);
       expect(run.exitCode, 0);
       expect(run.stdout, 'Hello world\n');
     });
 
     test('exports', () {
-      final run =
-          Process.runSync('node', ['build/node/slow_pi.js'], runInShell: true);
+      final run = Process.runSync('node', ['build/node/slow_pi.js'], runInShell: true);
       expect(run.exitCode, 0);
       expect(run.stdout, contains('slowPi(100): 3.1514934010709914\n'));
       expect(run.stdout, contains('fastPi: 3.1514934010709914\n'));

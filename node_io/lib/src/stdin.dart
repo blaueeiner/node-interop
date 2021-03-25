@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:convert';
 import 'dart:io' as io;
 
@@ -29,8 +31,7 @@ class Stdin extends ReadableStream<List<int>> implements io.Stdin {
   }
 
   @override
-  String readLineSync(
-      {Encoding encoding = io.systemEncoding, bool retainNewlines = false}) {
+  String readLineSync({Encoding encoding = io.systemEncoding, bool retainNewlines = false}) {
     // TODO: implement io.systemEncoding (!)
     // TODO: implement readLineSync
     return null;

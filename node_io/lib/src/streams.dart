@@ -1,5 +1,8 @@
 // Copyright (c) 2018, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
+
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -30,10 +33,8 @@ class ReadableStream<T> extends Stream<T> implements HasReadable {
   /// send to the listener. This allows implementations to convert raw
   /// JavaScript data in to desired Dart representation. If no convert
   /// function is provided then data is send to the listener unchanged.
-  ReadableStream(this.nativeInstance, {T Function(dynamic data) convert})
-      : _convert = convert {
-    _controller = StreamController(
-        onPause: _onPause, onResume: _onResume, onCancel: _onCancel);
+  ReadableStream(this.nativeInstance, {T Function(dynamic data) convert}) : _convert = convert {
+    _controller = StreamController(onPause: _onPause, onResume: _onResume, onCancel: _onCancel);
     nativeInstance.on('error', allowInterop(_errorHandler));
   }
 
@@ -67,8 +68,8 @@ class ReadableStream<T> extends Stream<T> implements HasReadable {
       _controller.close();
     }));
 
-    return _controller.stream.listen(onData,
-        onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return _controller.stream
+        .listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
   }
 }
 
@@ -89,8 +90,7 @@ class WritableStream<S> implements StreamSink<S> {
   /// it's added to the [nativeInstance]. This allows implementations to convert
   /// Dart objects in to values accepted by JavaScript streams. If no convert
   /// function is provided then data is sent to target unchanged.
-  WritableStream(this.nativeInstance, {dynamic Function(S data) convert})
-      : _convert = convert {
+  WritableStream(this.nativeInstance, {dynamic Function(S data) convert}) : _convert = convert {
     nativeInstance.on('error', allowInterop(_errorHandler));
   }
 

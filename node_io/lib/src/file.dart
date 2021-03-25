@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io;
@@ -197,8 +199,7 @@ class File extends FileSystemEntity implements file.File {
   @override
   Future<file.FileSystemEntity> delete({bool recursive = false}) {
     if (recursive) {
-      return Future.error(
-          UnsupportedError('Recursive delete is not supported by Node API'));
+      return Future.error(UnsupportedError('Recursive delete is not supported by Node API'));
     }
     final completer = Completer<File>();
     void callback(err) {
@@ -235,15 +236,13 @@ class File extends FileSystemEntity implements file.File {
   }
 
   @override
-  Future<DateTime> lastAccessed() =>
-      FileStat.stat(path).then((_) => _.accessed);
+  Future<DateTime> lastAccessed() => FileStat.stat(path).then((_) => _.accessed);
 
   @override
   DateTime lastAccessedSync() => FileStat.statSync(path).accessed;
 
   @override
-  Future<DateTime> lastModified() =>
-      FileStat.stat(path).then((_) => _.modified);
+  Future<DateTime> lastModified() => FileStat.stat(path).then((_) => _.modified);
 
   @override
   DateTime lastModifiedSync() => FileStat.statSync(path).modified;
@@ -272,8 +271,7 @@ class File extends FileSystemEntity implements file.File {
       _RandomAccessFile.openSync(path, mode);
 
   @override
-  io.IOSink openWrite(
-      {io.FileMode mode = io.FileMode.write, Encoding encoding = utf8}) {
+  io.IOSink openWrite({io.FileMode mode = io.FileMode.write, Encoding encoding = utf8}) {
     assert(mode == io.FileMode.write || mode == io.FileMode.append);
     var flags = (mode == io.FileMode.append) ? 'a+' : 'w';
     var options = WriteStreamOptions(flags: flags);
@@ -282,10 +280,9 @@ class File extends FileSystemEntity implements file.File {
   }
 
   @override
-  Future<Uint8List> readAsBytes() => openRead().fold(
-      <int>[],
-      (List<int> previous, List<int> element) => previous
-        ..addAll(element)).then((List<int> list) => Uint8List.fromList(list));
+  Future<Uint8List> readAsBytes() => openRead()
+      .fold(<int>[], (List<int> previous, List<int> element) => previous..addAll(element)).then(
+          (List<int> list) => Uint8List.fromList(list));
 
   @override
   Uint8List readAsBytesSync() {
@@ -404,9 +401,7 @@ class File extends FileSystemEntity implements file.File {
 
   @override
   Future<file.File> writeAsString(String contents,
-      {io.FileMode mode = io.FileMode.write,
-      Encoding encoding = utf8,
-      bool flush = false}) async {
+      {io.FileMode mode = io.FileMode.write, Encoding encoding = utf8, bool flush = false}) async {
     var sink = openWrite(mode: mode, encoding: encoding);
     sink.write(contents);
     if (flush == true) {
@@ -418,9 +413,7 @@ class File extends FileSystemEntity implements file.File {
 
   @override
   void writeAsStringSync(String contents,
-      {io.FileMode mode = io.FileMode.write,
-      Encoding encoding = utf8,
-      bool flush = false}) {
+      {io.FileMode mode = io.FileMode.write, Encoding encoding = utf8, bool flush = false}) {
     fs.writeFileSync(_absolutePath, contents);
   }
 
@@ -540,8 +533,7 @@ class _RandomAccessFile implements io.RandomAccessFile {
   }
 
   @override
-  void lockSync(
-      [io.FileLock mode = io.FileLock.exclusive, int start = 0, int end = -1]) {
+  void lockSync([io.FileLock mode = io.FileLock.exclusive, int start = 0, int end = -1]) {
     throw UnsupportedError('File locks are not supported by Node.js');
   }
 
@@ -689,8 +681,7 @@ class _RandomAccessFile implements io.RandomAccessFile {
   }
 
   @override
-  Future<io.RandomAccessFile> writeFrom(List<int> buffer,
-      [int start = 0, int end]) {
+  Future<io.RandomAccessFile> writeFrom(List<int> buffer, [int start = 0, int end]) {
     return _dispatch(() {
       final completer = Completer<io.RandomAccessFile>();
       void cb(err, bytesWritten, buffer) {
@@ -718,8 +709,7 @@ class _RandomAccessFile implements io.RandomAccessFile {
   }
 
   @override
-  Future<io.RandomAccessFile> writeString(String string,
-      {Encoding encoding = utf8}) {
+  Future<io.RandomAccessFile> writeString(String string, {Encoding encoding = utf8}) {
     return writeFrom(encoding.encode(string));
   }
 
@@ -731,8 +721,7 @@ class _RandomAccessFile implements io.RandomAccessFile {
 
   bool _closed = false;
 
-  Future<T> _dispatch<T>(Future<T> Function() request,
-      {bool markClosed = false}) {
+  Future<T> _dispatch<T>(Future<T> Function() request, {bool markClosed = false}) {
     if (_closed) {
       return Future.error(io.FileSystemException('File closed', path));
     }
@@ -754,8 +743,7 @@ class _RandomAccessFile implements io.RandomAccessFile {
 
   void _checkAvailable() {
     if (_asyncDispatched) {
-      throw io.FileSystemException(
-          'An async operation is currently pending', path);
+      throw io.FileSystemException('An async operation is currently pending', path);
     }
     if (_closed) {
       throw io.FileSystemException('File closed', path);

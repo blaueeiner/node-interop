@@ -1,5 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
+
+// @dart=2.9
+
 import 'dart:io' as io;
 import 'dart:js_util' as js_util;
 
@@ -76,20 +79,17 @@ class RequestHttpHeaders extends HttpHeaders {
   RequestHttpHeaders(this._request);
 
   @override
-  dynamic _getHeader(String name) =>
-      js_util.getProperty(_request.headers, name);
+  dynamic _getHeader(String name) => js_util.getProperty(_request.headers, name);
 
   @override
   void _setHeader(String name, dynamic value) =>
       throw io.HttpException('HTTP headers are not mutable.');
 
   @override
-  void _removeHeader(String name) =>
-      throw io.HttpException('HTTP headers are not mutable.');
+  void _removeHeader(String name) => throw io.HttpException('HTTP headers are not mutable.');
 
   @override
-  Iterable<String> _getHeaderNames() =>
-      List<String>.from(objectKeys(_request.headers));
+  Iterable<String> _getHeaderNames() => List<String>.from(objectKeys(_request.headers));
 }
 
 /// Proxy to native JavaScript HTTP headers.
@@ -226,8 +226,7 @@ abstract class HttpHeaders implements io.HttpHeaders {
 
   @override
   set ifModifiedSince(DateTime ifModifiedSince) {
-    _setHeader(io.HttpHeaders.ifModifiedSinceHeader,
-        io.HttpDate.format(ifModifiedSince));
+    _setHeader(io.HttpHeaders.ifModifiedSinceHeader, io.HttpDate.format(ifModifiedSince));
   }
 
   @override
@@ -308,8 +307,7 @@ abstract class HttpHeaders implements io.HttpHeaders {
   @override
   void remove(String name, Object value) {
     // TODO: this could actually be implemented on our side now.
-    throw UnsupportedError(
-        'Removing individual values not supported for Node.');
+    throw UnsupportedError('Removing individual values not supported for Node.');
   }
 
   @override

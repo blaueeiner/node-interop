@@ -1,6 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 @TestOn('node')
 library directory_test;
 
@@ -29,8 +31,7 @@ void main() {
     });
 
     test('stat', () async {
-      expect(
-          (await dir('__dummy__').stat()).type, FileSystemEntityType.notFound);
+      expect((await dir('__dummy__').stat()).type, FileSystemEntityType.notFound);
       expect((await dir('lib').stat()).type, FileSystemEntityType.directory);
     });
 

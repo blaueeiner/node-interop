@@ -4,6 +4,9 @@
 /// HTTP client using Node I/O system for Dart.
 ///
 /// See [NodeClient] for details.
+
+// @dart=2.9
+
 library node_http;
 
 import 'dart:async';
@@ -54,30 +57,24 @@ Future<Response> get(url, {Map<String, String> headers}) =>
 ///
 /// For more fine-grained control over the request, use [Request] or
 /// [StreamedRequest] instead.
-Future<Response> post(url,
-        {Map<String, String> headers, body, Encoding encoding}) =>
-    _withClient((client) =>
-        client.post(url, headers: headers, body: body, encoding: encoding));
+Future<Response> post(url, {Map<String, String> headers, body, Encoding encoding}) =>
+    _withClient((client) => client.post(url, headers: headers, body: body, encoding: encoding));
 
 /// Sends an HTTP PUT request with the given headers and body to the given URL,
 /// which can be a [Uri] or a [String].
 ///
 /// For more fine-grained control over the request, use [Request] or
 /// [StreamedRequest] instead.
-Future<Response> put(url,
-        {Map<String, String> headers, body, Encoding encoding}) =>
-    _withClient((client) =>
-        client.put(url, headers: headers, body: body, encoding: encoding));
+Future<Response> put(url, {Map<String, String> headers, body, Encoding encoding}) =>
+    _withClient((client) => client.put(url, headers: headers, body: body, encoding: encoding));
 
 /// Sends an HTTP PATCH request with the given headers and body to the given
 /// URL, which can be a [Uri] or a [String].
 ///
 /// For more fine-grained control over the request, use [Request] or
 /// [StreamedRequest] instead.
-Future<Response> patch(url,
-        {Map<String, String> headers, body, Encoding encoding}) =>
-    _withClient((client) =>
-        client.patch(url, headers: headers, body: body, encoding: encoding));
+Future<Response> patch(url, {Map<String, String> headers, body, Encoding encoding}) =>
+    _withClient((client) => client.patch(url, headers: headers, body: body, encoding: encoding));
 
 /// Sends an HTTP DELETE request with the given headers to the given URL, which
 /// can be a [Uri] or a [String].

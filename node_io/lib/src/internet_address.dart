@@ -1,5 +1,8 @@
 // Copyright (c) 2017, Anatoly Pulyaevskiy. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
+
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io' as io;
 import 'dart:js';
@@ -31,12 +34,10 @@ class InternetAddress implements io.InternetAddress {
   String get host => _host ?? address;
 
   @override
-  io.InternetAddressType get type => net.isIPv4(address)
-      ? io.InternetAddressType.IPv4
-      : io.InternetAddressType.IPv6;
+  io.InternetAddressType get type =>
+      net.isIPv4(address) ? io.InternetAddressType.IPv4 : io.InternetAddressType.IPv6;
 
-  InternetAddress._(this.address, [this._host])
-      : _inAddr = _inet_pton(address) {
+  InternetAddress._(this.address, [this._host]) : _inAddr = _inet_pton(address) {
     if (net.isIP(address) == 0) {
       throw ArgumentError('$address is not valid.');
     }
@@ -65,9 +66,8 @@ class InternetAddress implements io.InternetAddress {
         completer.completeError(error);
       } else {
         final addresses = List<DNSAddress>.from(result);
-        var list = addresses
-            .map((item) => InternetAddress._(item.address, host))
-            .toList(growable: false);
+        var list =
+            addresses.map((item) => InternetAddress._(item.address, host)).toList(growable: false);
         completer.complete(list);
       }
     }
