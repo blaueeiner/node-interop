@@ -8,7 +8,6 @@ import 'dart:io';
 import 'package:bazel_worker/bazel_worker.dart';
 import 'package:build/build.dart';
 import 'package:build_modules/build_modules.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:scratch_space/scratch_space.dart';
 
@@ -27,7 +26,7 @@ class DevCompilerBuilder implements Builder {
   final DartPlatform platform;
 
   /// The sdk kernel file for the current platform.
-  final String sdkKernelPath;
+  final String? sdkKernelPath;
 
   /// The root directory of the platform's dart SDK.
   ///
@@ -44,15 +43,14 @@ class DevCompilerBuilder implements Builder {
   final String librariesPath;
 
   DevCompilerBuilder(
-      {bool useIncrementalCompiler,
-      @required this.platform,
+      {bool? useIncrementalCompiler,
+      required this.platform,
       this.sdkKernelPath,
-      String librariesPath,
-      String platformSdk})
+      String? librariesPath,
+      String? platformSdk})
       : useIncrementalCompiler = useIncrementalCompiler ?? true,
         platformSdk = platformSdk ?? sdkDir,
-        librariesPath = librariesPath ??
-            p.join(platformSdk ?? sdkDir, 'lib', 'libraries.json'),
+        librariesPath = librariesPath ?? p.join(platformSdk ?? sdkDir, 'lib', 'libraries.json'),
         buildExtensions = {
           moduleExtension(platform): [
             jsModuleExtension,
@@ -67,12 +65,10 @@ class DevCompilerBuilder implements Builder {
   @override
   Future build(BuildStep buildStep) async {
     var module = Module.fromJson(
-        json.decode(await buildStep.readAsString(buildStep.inputId))
-            as Map<String, dynamic>);
+        json.decode(await buildStep.readAsString(buildStep.inputId)) as Map<String, dynamic>);
     // Entrypoints always have a `.module` file for ease of looking them up,
     // but they might not be the primary source.
-    if (module.primarySource.changeExtension(moduleExtension(platform)) !=
-        buildStep.inputId) {
+    if (module.primarySource.changeExtension(moduleExtension(platform)) != buildStep.inputId) {
       return;
     }
 
@@ -83,8 +79,8 @@ class DevCompilerBuilder implements Builder {
     }
 
     try {
-      await _createDevCompilerModule(module, buildStep, useIncrementalCompiler,
-          platformSdk, sdkKernelPath, librariesPath);
+      await _createDevCompilerModule(
+          module, buildStep, useIncrementalCompiler, platformSdk, sdkKernelPath, librariesPath);
     } on DartDevcCompilationException catch (e) {
       await handleError(e);
     } on MissingModulesException catch (e) {
@@ -94,19 +90,13 @@ class DevCompilerBuilder implements Builder {
 }
 
 /// Compile [module] with the dev compiler.
-Future<void> _createDevCompilerModule(
-    Module module,
-    BuildStep buildStep,
-    bool useIncrementalCompiler,
-    String dartSdk,
-    String sdkKernelPath,
-    String librariesPath,
+Future<void> _createDevCompilerModule(Module module, BuildStep buildStep,
+    bool useIncrementalCompiler, String dartSdk, String? sdkKernelPath, String librariesPath,
     {bool debugMode = true}) async {
-  var transitiveDeps = await buildStep.trackStage('CollectTransitiveDeps',
-      () => module.computeTransitiveDependencies(buildStep));
+  var transitiveDeps = await buildStep.trackStage(
+      'CollectTransitiveDeps', () => module.computeTransitiveDependencies(buildStep));
   var transitiveKernelDeps = [
-    for (var dep in transitiveDeps)
-      dep.primarySource.changeExtension(ddcKernelExtension)
+    for (var dep in transitiveDeps) dep.primarySource.changeExtension(ddcKernelExtension)
   ];
   var scratchSpace = await buildStep.fetchResource(scratchSpaceResource);
 
@@ -115,8 +105,7 @@ Future<void> _createDevCompilerModule(
       'EnsureAssets', () => scratchSpace.ensureAssets(allAssetIds, buildStep));
   var jsId = module.primarySource.changeExtension(jsModuleExtension);
   var jsOutputFile = scratchSpace.fileFor(jsId);
-  var sdkSummary =
-      p.url.join(dartSdk, sdkKernelPath ?? 'lib/_internal/ddc_sdk.dill');
+  var sdkSummary = p.url.join(dartSdk, sdkKernelPath ?? 'lib/_internal/ddc_sdk.dill');
 
   var packagesFile = await createPackagesFile(allAssetIds);
   var request = WorkRequest()
@@ -144,18 +133,16 @@ Future<void> _createDevCompilerModule(
     ..inputs.add(Input()
       ..path = sdkSummary
       ..digest = [0])
-    ..inputs.addAll(
-        await Future.wait(transitiveKernelDeps.map((dep) async => Input()
-          ..path = scratchSpace.fileFor(dep).path
-          ..digest = (await buildStep.digest(dep)).bytes)));
+    ..inputs.addAll(await Future.wait(transitiveKernelDeps.map((dep) async => Input()
+      ..path = scratchSpace.fileFor(dep).path
+      ..digest = (await buildStep.digest(dep)).bytes)));
 
   WorkResponse response;
   try {
     var driverResource = dartdevkDriverResource;
     var driver = await buildStep.fetchResource(driverResource);
     response = await driver.doWork(request,
-        trackWork: (response) =>
-            buildStep.trackStage('Compile', () => response, isExternal: true));
+        trackWork: (response) => buildStep.trackStage('Compile', () => response, isExternal: true));
   } finally {
     await packagesFile.parent.delete(recursive: true);
   }
@@ -179,8 +166,7 @@ Future<void> _createDevCompilerModule(
     if (debugMode) {
       // We need to modify the sources in the sourcemap to remove the custom
       // `multiRootScheme` that we use.
-      var sourceMapId =
-          module.primarySource.changeExtension(jsSourceMapExtension);
+      var sourceMapId = module.primarySource.changeExtension(jsSourceMapExtension);
       var file = scratchSpace.fileFor(sourceMapId);
       var content = await file.readAsString();
       var json = jsonDecode(content);
@@ -193,8 +179,7 @@ Future<void> _createDevCompilerModule(
 /// Returns the `--summary=` argument for a dependency.
 String _summaryArg(Module module) {
   final kernelAsset = module.primarySource.changeExtension(ddcKernelExtension);
-  final moduleName =
-      ddcModuleName(module.primarySource.changeExtension(jsModuleExtension));
+  final moduleName = ddcModuleName(module.primarySource.changeExtension(jsModuleExtension));
   return '--summary=${scratchSpace.fileFor(kernelAsset).path}=$moduleName';
 }
 
@@ -219,9 +204,8 @@ List<String> fixSourceMapSources(List<String> uris) {
     var uri = Uri.parse(source);
     // We only want to rewrite multi-root scheme uris.
     if (uri.scheme.isEmpty) return source;
-    var newSegments = uri.pathSegments.first == 'packages'
-        ? uri.pathSegments
-        : uri.pathSegments.skip(1);
+    var newSegments =
+        uri.pathSegments.first == 'packages' ? uri.pathSegments : uri.pathSegments.skip(1);
     return Uri(path: p.url.joinAll(['/'].followedBy(newSegments))).toString();
   }).toList();
 }

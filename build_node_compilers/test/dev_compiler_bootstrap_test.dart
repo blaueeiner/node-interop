@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 import 'util.dart';
 
 void main() {
-  Map<String, dynamic> assets;
+  late Map<String, dynamic> assets;
 
   setUp(() async {
     assets = {
@@ -52,7 +52,7 @@ void main() {
         isNot(contains('lib/a')),
       ])),
     };
-    await testBuilder(NodeEntrypointBuilder(WebCompiler.DartDevc), assets,
+    await testBuilder(NodeEntrypointBuilder(WebCompiler.DartDevc), assets as Map<String, Object>,
         outputs: expectedOutputs);
   });
 }

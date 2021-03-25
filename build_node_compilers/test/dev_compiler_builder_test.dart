@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 import 'util.dart';
 
 void main() {
-  Map<String, dynamic> assets;
+  late Map<String, dynamic> assets;
 
   group('error free project', () {
     setUp(() async {
@@ -52,7 +52,7 @@ void main() {
         'a|web/index$jsSourceMapExtension':
             decodedMatches(contains('index.dart')),
       };
-      await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets,
+      await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets as Map<String, Object>,
           outputs: expectedOutputs);
     });
   });
@@ -82,7 +82,7 @@ void main() {
               allOf(contains('String'), contains('assigned'), contains('int'))),
         };
         var logs = <LogRecord>[];
-        await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets,
+        await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets as Map<String, Object>,
             outputs: expectedOutputs, onLog: logs.add);
         expect(
             logs,
@@ -116,7 +116,7 @@ void main() {
               contains('Unable to find modules for some sources')),
         };
         var logs = <LogRecord>[];
-        await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets,
+        await testBuilder(DevCompilerBuilder(platform: ddcPlatform), assets as Map<String, Object>,
             outputs: expectedOutputs, onLog: logs.add);
         expect(
             logs,

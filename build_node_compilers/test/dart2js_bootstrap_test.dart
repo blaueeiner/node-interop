@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 import 'util.dart';
 
 void main() {
-  Map<String, dynamic> assets;
+  late Map<String, dynamic> assets;
   final platform = dart2jsPlatform;
 
   setUp(() async {
@@ -41,7 +41,7 @@ void main() {
       'a|web/index.dart.js': decodedMatches(contains('world')),
       'a|web/index.dart.js.map': anything,
     };
-    await testBuilder(NodeEntrypointBuilder(WebCompiler.Dart2Js), assets,
+    await testBuilder(NodeEntrypointBuilder(WebCompiler.Dart2Js), assets as Map<String, Object>,
         outputs: expectedOutputs);
   });
 }
